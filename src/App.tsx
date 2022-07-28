@@ -1,11 +1,15 @@
 import { Button, Container } from '@mui/material';
 import React from 'react';
+import { NavBar } from './common/NavBar';
 
 function App() {
   return (
-    <Container maxWidth="xl">
-      <Button variant="contained">Botton</Button>
-    </Container>
+    <div>
+      <NavBar />
+      <Container sx={{ mt: 9 }} maxWidth="xl">
+        <Button variant="contained">Botton</Button>
+      </Container>
+    </div>
   );
 }
 
