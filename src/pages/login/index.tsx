@@ -1,5 +1,7 @@
 import { Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { useNotification } from '../../context/notification.context'
+import { LoginValidate } from '../../utils/validateForm'
 
 type LoginType = {
   username: string,
@@ -7,6 +9,7 @@ type LoginType = {
 }
 
 export const LoginPage: React.FC<{}> = () => {
+  const { getError, getSuccess } = useNotification();
 
   const [loginData, setLoginData] = useState<LoginType>({
     username: "",
@@ -22,7 +25,11 @@ export const LoginPage: React.FC<{}> = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(loginData);
+    LoginValidate.validate(loginData).then(() => {
+      getSuccess(JSON.stringify(loginData));
+    }).catch((error) => {
+      getError(error.message);
+    })
 
   }
 
@@ -40,7 +47,6 @@ export const LoginPage: React.FC<{}> = () => {
                 label="Email"
                 margin="normal"
                 sx={{ mt: 2, mb: 1.5 }}
-                required
                 fullWidth
               />
               <TextField
@@ -50,7 +56,6 @@ export const LoginPage: React.FC<{}> = () => {
                 label="Password"
                 margin="normal"
                 sx={{ mt: 1, mb: 1.5 }}
-                required
                 fullWidth
               />
               <Button variant="contained" fullWidth sx={{ mt: 1.5, mb: 2.5 }} type="submit">Iniciar Sesion</Button>
